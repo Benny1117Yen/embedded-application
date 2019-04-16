@@ -1,0 +1,164 @@
+void setup() {
+  // put your setup code here, to run once:
+  
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  lcd.setCursor(0,0);
+  lcd.print("Hello, sir!");
+  lcd.setCursor(0,1);
+  lcd.print("Test Pressure!");
+  delay(1000);
+  lcd.clear();
+  //analogReference(INTERNAL);
+  //analogReadResolution(12);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+    //double smoothed = (smoothed * (t-1) + analogRead(A5)) / t;
+    //analogReference(AR_DEFAULT);
+    analogReadResolution(10);
+    //double sensor_value = analogRead(A5);
+    int average = 0;
+    for (int i=0; i < 50; i++) {
+    average = average + analogRead(A5);
+    }
+    double sensor_value = average/50;
+    
+    //double s_v = smoothed;
+    
+    //unsigned short int s_v;
+    //double s_v = analogRead(analogOutPin) / t;
+    float volt = ((double)sensor_value * 5) / 1024;
+    //double volt = ((double) s_v * 3.3 / 1024.0); //将返回值换算成电压
+    //float p_kpa =  (10 * 1.206944593532122 * ((float) volt - 0.5));
+    //float smoothed = 7.982926100271057 * ((smoothed * (t-1) + (float) p_kpa) / t);
+    //float p_mmhg = ((float) p_kpa * 7.5006168);
+    //float p_mmhg = ((float) volt - 0.08) * 125;
+    //float p_mmhg = ((float) volt - 0.2) * 100;
+    //float p_psi = ((float) volt - 0.5) * 0.36259435 / 2;
+    float p_psi = sensor_value / 1000 -0.009;
+    
+    //float p_psi = ((float) p_kpa * 0.14503774);
+    //float p_psi = (float) p_mmhg * 0.019336776;
+
+    //float p_kpa = (float) p_mmhg * 0.13332237;
+    
+    //float p_kg_cm2 = ((float) p_kpa * 0.010197162 * 9975.4);
+    //float p_kg_cm2 = (((float)p_kpa * 862.16 ) + 5.9799);
+    //float p_kg_cm2 = (float) p_mmhg * 0.0013595098 * 9975.4;
+    
+    //p_mmhg_int = ((double) p_mmhg + 19.857223) * 6.5437338;
+    //p_psi_int = ((double) p_psi + 0.3839747) * 6.54373323;
+    //float p_mmhg_int = ((float) p_mmhg - 0.4894812) * 65.573176809489946;
+    //float p_psi_int = ((float) p_psi - 0.00946499) * 65.57318745707179;
+    //float p_mmhg_int = (float) p_mmhg;
+    float p_psi_int = (float) p_psi ;
+    float p_kg_cm2 =  ((float)p_psi_int * 862.16)- 510.39872;
+    float kg_analysis = (float) p_kg_cm2 + 25;
+
+    lcd.setCursor(0, 0);
+    lcd.print("Pressurize!");
+    //lcd.setCursor(3, 1);
+    //lcd.print("mmHg");
+    lcd.setCursor(11, 1);
+    lcd.print("kg");
+   /*if(p_mmhg_int >= 100){
+      a = (int)(p_mmhg_int / 100) + '0';
+      b = (int)((p_mmhg_int - 100) / 10) + '0';
+      c = (int)(((p_mmhg_int /10.0) - (int)(p_mmhg_int / 10.0)) * 10) + '0';
+      lcd.setCursor(0, 1);
+      lcd.print(a);
+      lcd.setCursor(1, 1);
+      lcd.print(b);
+      lcd.setCursor(2, 1);
+      lcd.print(c);
+     }else if(p_mmhg_int >= 10 && p_mmhg_int < 99.99){
+      b = (int)(p_mmhg_int / 10) + '0';
+      c = (int)(((p_mmhg_int / 10.0) - (int)(p_mmhg_int / 10.0)) * 10) + '0';
+      lcd.setCursor(0, 1);
+      lcd.print(b);
+      lcd.setCursor(1, 1);
+      lcd.print(c);
+      lcd.setCursor(2, 1);
+      lcd.print(" mmHg");
+     }else if(p_mmhg_int >= 1){
+      c = p_mmhg_int + '0';
+      lcd.setCursor(0, 1);
+      lcd.print(c);
+      lcd.setCursor(1, 1);
+      lcd.print("  mmHg");
+     }/*else if(p_mmhg_int = 0){
+      c = p_mmhg_int * 0 + '0';
+      lcd.setCursor(0, 1);
+      lcd.print(c);
+      lcd.setCursor(1, 1);
+      lcd.print(c);
+     }/*else if(p_mmhg_int <= 0){
+      lcd.setCursor(0, 1);
+      lcd.print(0);
+      lcd.setCursor(1, 1);
+      lcd.print(0);
+     }*/
+    if(kg_analysis >= 200){
+      lcd.setCursor(8, 1);
+      lcd.print("error");
+     }else if(kg_analysis >= 100){
+      d = (int)(kg_analysis / 100) + '0';
+      e = (int)((kg_analysis - 100) / 10) + '0';
+      f = (int)(((kg_analysis /10.0) - (int)(kg_analysis / 10.0)) * 10) + '0';
+      lcd.setCursor(8, 1);
+      lcd.print(d);
+      lcd.setCursor(9, 1);
+      lcd.print(e);
+      lcd.setCursor(10, 1);
+      lcd.print(f);
+      lcd.setCursor(11, 1);
+      //lcd.print("kg");
+     }else if(kg_analysis >= 26){
+      e = (int)(kg_analysis / 10) + '0';
+      f = (int)(((kg_analysis / 10.0) - (int)(kg_analysis / 10.0)) * 10) + '0';
+      lcd.setCursor(8, 1);
+      lcd.print(e);
+      lcd.setCursor(9, 1);
+      lcd.print(f);
+      lcd.setCursor(10, 1);
+      lcd.print(" kg");
+     }/*else if(kg_analysis >= 1){
+      f = kg_analysis + '0';
+      lcd.setCursor(8, 1);
+      lcd.print(f);
+      lcd.setCursor(9, 1);
+      lcd.print("  kg");
+     }*/else
+     {
+      delay(500);
+      lcd.clear();
+      }
+
+    /*Serial.print(analogRead(A5)); 
+    Serial.println(" bits");
+    Serial.print("\t");*/
+    Serial.print(sensor_value, 7); 
+    Serial.println(" s_v");
+    Serial.print("\t");
+    Serial.print(volt, 7);  //串口输出电压值
+    Serial.println(" V");  //输出单位，并且换行
+    Serial.print("\t");
+    //Serial.print(p_kpa, 7);
+    //Serial.println(" kpa");
+    //Serial.print("\t");
+    //Serial.print(p_mmhg_int, 7);
+    //Serial.println(" mmHg");
+    //Serial.print("\t");
+    Serial.print(p_psi_int, 8);
+    Serial.println(" psi");
+    Serial.print("\t");
+    /*Serial.print(kg_analysis, 8);
+    Serial.println(" kg");*/
+    delay(1000);
+    
+      
+  
+    
+}
