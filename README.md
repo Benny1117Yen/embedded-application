@@ -3,7 +3,8 @@
 #Some projects about arduino
 
 #source code
-##include <LiquidCrystal.h>//LCD
+===
+#include <LiquidCrystal.h>//LCD
 LiquidCrystal lcd(49, 48, 47, 43, 42, 41); //set lcd pin RS E D4 D5 D6 D7 
 int K1state,K2state,K3state,K4state;
 char DATA_TX[7] ={
