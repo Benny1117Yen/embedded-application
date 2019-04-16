@@ -1,0 +1,62 @@
+void setup(){
+  Serial.begin(9600);
+  lcd.init();                      // initialize the lcd
+  // Print a message to the LCD.
+  lcd.backlight();
+  lcd.begin(16,2);
+  lcd.setCursor(0,0);
+  lcd.print("Hello, sir!");
+  lcd.setCursor(0,1);
+  lcd.print("Type Pressure!");
+  //lcd.setCursor(0,2);
+  //lcd.print("Arduino LCM IIC 2004");
+  //lcd.setCursor(2,3);
+  //lcd.print("Power By Ec-yuan!");
+  delay(1000);
+  lcd.clear();
+}
+  
+void loop(){
+  char key = mykeypad.getKey();
+  char O[3];
+  char P[] = {'0', '0', '0'};
+  int C = 0;
+  unsigned char length();
+//while(C < 3){
+   if (key != NO_KEY && (key=='1'||key=='2'||key=='3'||key=='4'||key=='5'||key=='6'||key=='7'||key=='8'||key=='9'||key=='0'))
+   {
+     //if (presentValue != true)
+     //{
+     //while(p1.length() <= 3){
+     Serial.println(key);
+     String p1 = p1 + key;
+     
+     //O[1] = O[1] + key;
+     //char P = P + key;
+     //lcd.setCursor(0, 1);
+     //lcd.print(O[1]);
+     lcd.setCursor(1, 1);
+     //lcd.print(P);
+     lcd.print(p1);
+     //}
+     /*else
+     {
+      p2 = p2 + key;
+      int numLength = p2.length();
+      lcd.setCursor(0, 1);
+      lcd.print(p2);
+      final = true;
+     }*/
+   }
+   else if (key != NO_KEY && key == 'C')
+   {
+    lcd.clear();
+    presentValue = false;
+    final = false;
+    p1 = "";
+    p2 = "";
+    //answer = 0;
+    //op = ' ';
+   }
+ //}
+}
